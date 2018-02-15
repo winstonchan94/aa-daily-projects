@@ -77,6 +77,7 @@ class SudokuGame
       val.between?(0, 9)
   end
 
+
   private
   attr_reader :board
 end
