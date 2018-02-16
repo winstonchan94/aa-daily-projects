@@ -1,4 +1,5 @@
 require_relative "board"
+require 'byebug'
 
 # People write terrible method names in real life.
 # On the job, it is your job to figure out how the methods work and then name them better.
@@ -15,21 +16,21 @@ class SudokuGame
   end
 
   def retrieve_pos_from_ui
-    p = nil
-    until p && legal_illegibility_of_p?(p)
+    pos = nil
+    until pos && legal_illegibility_of_p?(pos)
       puts "Please enter a position on the board (e.g., '3,4')"
       print "> "
 
       begin
-        p = parse_inanity(gets.chomp)
+        pos = parse_inanity(gets.chomp)
       rescue
         puts "Invalid position entered (did you use a comma?)"
         puts ""
 
-        p = nil
+        pos = nil
       end
     end
-    p
+    pos
   end
 
   def retrieve_value_from_ui
@@ -54,12 +55,17 @@ class SudokuGame
     pos_to_val(retrieve_pos_from_ui, retrieve_value_from_ui)
   end
 
-  def pos_to_val(p, v)
-    board[p] = v
+  def pos_to_val(pos, v)
+    board[pos] = v
   end
 
   def commence_proceedings
-    process_parameters until board_process_terminates?
+    board.render
+    until board_process_terminates?
+      process_parameters
+      # debugger
+      board.render
+    end
     puts "Congratulations, you win!"
   end
 
